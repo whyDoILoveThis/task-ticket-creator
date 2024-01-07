@@ -1,6 +1,15 @@
 import mongoose, { Schema } from "mongoose";
 
-mongoose.connect(process.env.MONGODB_URI);
+
+console.log('🔃CONNECTING TO MONGODB....');
+try {
+    await mongoose.connect(process.env.MONGODB_URI);
+
+    console.log('🟢MONGO DB CONNECTION SUCCESS')
+}catch(err) {
+    console.log('⛔ ISSUE CONNECTING TO MONGO DB::  ', err);
+    
+}
 mongoose.Promise = global.Promise
 
 const ticketSchema = new Schema(
@@ -17,6 +26,7 @@ const ticketSchema = new Schema(
         timestamps: true,
     }
 );
+
 
 const Ticket = mongoose.models.Ticket || mongoose.model('Ticket', ticketSchema)
 export default Ticket

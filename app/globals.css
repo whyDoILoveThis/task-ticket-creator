@@ -26,6 +26,16 @@
     @apply text-sm text-default-text
   }
 
+  form {
+    @apply rounded-xl p-4
+  }
+  label {
+    @apply mt-4
+  }
+  input, select, textarea {
+    @apply m-1 rounded bg-card p-1
+  }
+
 }
 
 @layer components {
@@ -33,6 +43,19 @@
     @apply text-default-text text-xl;
   }
   .btn {
-    @apply hover:no-underline bg-blu-accent hover:bg-blu-accent-hover tracking-wider w-full text-center text-nav font-bold cursor-pointer uppercase px-4 py-2 rounded-md transition-colors block
+    @apply hover:no-underline bg-blue-accent hover:bg-blue-accent-hover tracking-wider w-full text-center text-nav font-bold cursor-pointer uppercase px-4 py-2 rounded-md transition-colors block
   }
+  .btn-grn {
+    @apply  bg-grn-accent hover:bg-grn-accent-hover text-grn-text
+  }
+}
+
+.btn-grn {
+  border: 1px solid #00ff00;
+
+}
+
+.btn-green {
+  color: #8fff8f;
+  background-color: #43b74f4d;
 }
