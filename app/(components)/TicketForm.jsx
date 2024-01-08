@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-const TicketForm = () => {
+const TicketForm = ({ ticket }) => {
+  const EDITMODE = ticket._id === "new" ? false : true;
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -18,21 +20,36 @@ const TicketForm = () => {
   const handleSubmit = async (e) => {
     console.log("📃form submit being handled");
     e.preventDefault();
-    console.log("👍✋🛑🤚👍default form behavior prevented");
-    console.log("🏃‍♂️💨fetching response.....");
-    const res = await fetch("/api/Tickets", {
-      method: "POST",
-      body: JSON.stringify({ formData }),
-      "content-type": "application/json",
-    });
-    console.log("✔👍response fetch ok");
 
-    if (!res.ok) {
-      throw new Error("❌failed to create Ticket!!!!");
+    if (EDITMODE) {
+      const res = await fetch(`/api/Tickets/${ticket._id}`, {
+        method: "PUT",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
+      console.log("✔👍response PUT ok");
+
+      if (!res.ok) {
+        throw new Error("❌failed to update Ticket!!!!");
+      }
+
+      router.push("/");
+      router.refresh();
+    } else {
+      const res = await fetch("/api/Tickets", {
+        method: "POST",
+        body: JSON.stringify({ formData }),
+        "content-type": "application/json",
+      });
+      console.log("✔👍response POST ok");
+
+      if (!res.ok) {
+        throw new Error("❌failed to create Ticket!!!!");
+      }
+
+      router.refresh();
+      router.push("/");
     }
-
-    router.refresh();
-    router.push("/");
   };
 
   const startingTicketData = {
@@ -44,6 +61,15 @@ const TicketForm = () => {
     category: "Hardware Problem",
   };
 
+  if (EDITMODE) {
+    startingTicketData["title"] = ticket.title;
+    startingTicketData["description"] = ticket.description;
+    startingTicketData["priority"] = ticket.priority;
+    startingTicketData["progress"] = ticket.progress;
+    startingTicketData["status"] = ticket.status;
+    startingTicketData["category"] = ticket.category;
+  }
+
   const [formData, setFormData] = useState(startingTicketData);
   return (
     <div className="flex justify-center ">
@@ -52,7 +78,19 @@ const TicketForm = () => {
         method="post"
         onSubmit={handleSubmit}
       >
-        <h3>Create Your Ticket</h3>
+        <h3>
+          {EDITMODE ? (
+            <span className="text-orange-300">
+              <span className="text-green-400">
+                UPDATE:
+                <br />
+              </span>
+              {ticket.title}
+            </span>
+          ) : (
+            "Create Your Ticket"
+          )}
+        </h3>
         <label>Title</label>
         <input
           id="title"
@@ -149,8 +187,8 @@ const TicketForm = () => {
         <div className="flex justify-center">
           <input
             type="submit"
-            className="btn btn-grn w-fit"
-            value="Create Ticket"
+            className={`btn ${EDITMODE ? "btn-blu" : "btn-grn"} w-fit`}
+            value={EDITMODE ? "UPDATE" : "Create Ticket"}
           />
         </div>
       </form>
