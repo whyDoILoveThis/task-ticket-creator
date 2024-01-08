@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 
 console.log('🔃CONNECTING TO MONGODB....');
 try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect('mongodb+srv://TicketMaster:BLackBitch5764@cluster0.fowyzvn.mongodb.net/TaskTicketDB');
 
     console.log('🟢MONGO DB CONNECTION SUCCESS')
 }catch(err) {

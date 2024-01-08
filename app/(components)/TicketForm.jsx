@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import SpinnyLoader from "./SpinnyLoader";
 const TicketForm = ({ ticket }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const EDITMODE = ticket._id === "new" ? false : true;
 
   const router = useRouter();
@@ -19,6 +22,7 @@ const TicketForm = ({ ticket }) => {
 
   const handleSubmit = async (e) => {
     console.log("📃form submit being handled");
+    setIsLoading(true);
     e.preventDefault();
 
     if (EDITMODE) {
@@ -36,6 +40,7 @@ const TicketForm = ({ ticket }) => {
       router.push("/");
       router.refresh();
     } else {
+      setIsLoading(true);
       const res = await fetch("/api/Tickets", {
         method: "POST",
         body: JSON.stringify({ formData }),
@@ -47,8 +52,8 @@ const TicketForm = ({ ticket }) => {
         throw new Error("❌failed to create Ticket!!!!");
       }
 
-      router.refresh();
       router.push("/");
+      router.refresh();
     }
   };
 
@@ -69,12 +74,16 @@ const TicketForm = ({ ticket }) => {
     startingTicketData["status"] = ticket.status;
     startingTicketData["category"] = ticket.category;
   }
-
   const [formData, setFormData] = useState(startingTicketData);
-  return (
-    <div className="flex justify-center ">
+
+  return isLoading ? (
+    <div className="flex justify-center items-center size-full">
+      <SpinnyLoader />
+    </div>
+  ) : (
+    <div className="flex justify-center mb-32">
       <form
-        className="flex flex-col gap-3 w-1/2 "
+        className="flex flex-col gap-3 w-2/3 "
         method="post"
         onSubmit={handleSubmit}
       >
@@ -116,9 +125,9 @@ const TicketForm = ({ ticket }) => {
           value={formData.category}
           onChange={handleChange}
         >
-          <option value="Hardware Problem">Hardware Problem</option>
-          <option value="Software Problem">Software Problem</option>
-          <option value="Project">Project</option>
+          <option value="Hardware Problem">💻Hardware Problem</option>
+          <option value="Software Problem">👨‍💻Software Problem</option>
+          <option value="Project">⛏️Project</option>
         </select>
         <label>Priority</label>
         <div>
@@ -180,9 +189,9 @@ const TicketForm = ({ ticket }) => {
         />
         <label>Status</label>
         <select name="status" value={formData.status} onChange={handleChange}>
-          <option value="not started">Not Started</option>
-          <option value="started">Started</option>
-          <option value="done">Done</option>
+          <option value="not started">🛑Not Started</option>
+          <option value="started">🏃‍♂️💨Started</option>
+          <option value="done">🤘🎉Done</option>
         </select>
         <div className="flex justify-center">
           <input
