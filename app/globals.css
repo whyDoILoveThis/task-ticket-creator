@@ -51,6 +51,9 @@
   .btn-grn {
     @apply  bg-grn-accent hover:bg-grn-accent-hover text-grn-text
   }
+  .btn-red {
+    @apply  bg-grn-accent hover:bg-grn-accent-hover text-grn-text
+  }
   
 }
 
@@ -59,16 +62,16 @@
 
 }
 
-.btn-blu {
-  color: #a8cefd;
-  background-color: #2841ff57;
-  border: 1px solid #0051ff;
+.btn-red {
+  color: #f6d1d1;
+  background-color: #f10d0d53;
+  border: 1px solid #ff0000;
 }
 
-.btn-blu:hover {
-  color: #a8cefd;
-  background-color: #5e70ff57;
-  border: 1px solid #0051ff;
+.btn-red:hover {
+  color: #ff4646;
+  background-color: #ff818157;
+  border: 1px solid #ff0000;
 }
 
 .edit-overlay::before {
@@ -145,5 +148,96 @@
 @keyframes rotate {
   100% {
       transform: rotate(360deg);
+  }
+}
+
+
+
+
+:root {
+  --color-modal-primary: #8e1b1be3;
+}
+
+.modal__confirm-delete {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(31, 31, 31, 0.638);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+.modal__confirm-delete--space-close {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 99;
+}
+
+.modal__confirm-delete--modal-content {
+  position: relative;
+  z-index: 999;
+  animation-name: animateModal;
+  animation-duration: 0.3s;
+}
+
+.modal__confirm-delete--header {
+  background-color: var(--color-modal-primary);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+
+.btn--close-modal {
+  position: absolute;
+  right: 8px;
+  cursor: pointer;
+}
+
+.modal__confirm-delete--body {
+  background-color: rgba(0, 0, 0, 0.703);
+  padding: 40px;
+}
+
+.modal__confirm-delete--footer {
+  background-color: var(--color-modal-primary);
+  border-radius: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding: 1rem;
+}
+
+.modal__confirm-delete--footer h2 {
+  margin: 0;
+}
+
+.modal__confirm-delete--btn-wrap {
+  display: flex;
+  gap: 1rem;
+}
+
+@keyframes animateModal {
+  from {
+      top: -600px;
+      opacity: 0;
+  }
+  to{
+      top: 0;
+      opacity: 1;
   }
 }
