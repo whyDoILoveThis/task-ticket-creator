@@ -33,7 +33,7 @@ const TicketCard = ({ ticket }) => {
   return (
     <div
       onClick={navigateToEditTicket}
-      className="group relative flex flex-col rounded-2xl border border-white/10 
+      className="group mt-2 relative flex flex-col rounded-2xl border border-white/10 
       bg-gradient-to-br from-white/[0.05] to-white/[0.02] 
       p-5 shadow-xl backdrop-blur-xl 
       transition-all duration-300 hover:scale-[1.02] hover:border-white/20 
