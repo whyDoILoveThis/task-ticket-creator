@@ -12,7 +12,7 @@ const TicketCard = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const formatTimestamp = (timestamp: string) => {
+  const formatTimestamp = (timestamp) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "short",
