@@ -5,7 +5,6 @@ import DeleteBlock from "./DeleteBlock";
 import PriorityDisplay from "./PriorityDisplay";
 import ProgressBar from "./ProgressBar";
 import StatusDisplay from "./StatusDisplay";
-import Link from "next/link";
 import SpinnyLoader from "./SpinnyLoader";
 import { useRouter } from "next/navigation";
 
@@ -13,20 +12,17 @@ const TicketCard = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const formatTimestamp = (timestamp) => {
-    const options = {
+  const formatTimestamp = (timestamp: string) => {
+    const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
-      month: "2-digit",
+      month: "short",
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     };
 
-    const date = new Date(timestamp);
-    const formattedDate = date.toLocaleString("en-US", options);
-
-    return formattedDate;
+    return new Date(timestamp).toLocaleString("en-US", options);
   };
 
   const navigateToEditTicket = () => {
@@ -35,37 +31,48 @@ const TicketCard = ({ ticket }) => {
   };
 
   return (
-    <div className="relative flex flex-col bg-card rounded-md shadow-lg p-3 m-2">
-      <div className="flex justify-between mb-3 ">
+    <div
+      onClick={navigateToEditTicket}
+      className="group relative flex flex-col rounded-2xl border border-white/10 
+      bg-gradient-to-br from-white/[0.05] to-white/[0.02] 
+      p-5 shadow-xl backdrop-blur-xl 
+      transition-all duration-300 hover:scale-[1.02] hover:border-white/20 
+      hover:shadow-2xl cursor-pointer"
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
         <PriorityDisplay priority={ticket.priority} />
-        <div
-          onClick={() => {
-            navigateToEditTicket();
-          }}
-          className={isLoading ? "" : "edit-overlay"}
-        ></div>
-        <div className="ml-auto">
-          <DeleteBlock id={ticket._id} />
+
+        <div className="flex items-center gap-2">
+          {isLoading ? (
+            <SpinnyLoader />
+          ) : (
+            <DeleteBlock id={ticket._id} />
+          )}
         </div>
       </div>
-      <h4>{ticket.title}</h4>
-      {isLoading ? (
-        <SpinnyLoader />
-      ) : (
+
+      {/* Title */}
+      <h3 className="text-lg font-semibold text-white tracking-tight mb-2 group-hover:text-pink-400 transition-colors">
+        {ticket.title}
+      </h3>
+
+      {/* Description */}
+      {!isLoading && (
         <>
-          <hr className="h-px border-0 bg-page mb-2" />
-          <p className="whitespace-pre-wrap">{ticket.description}</p>
-          <div className="flex-grow"></div>
-          <div className="flex mt-2">
-            <div className="flex flex-col">
-              <p className="text-xs my-1">
+          <p className="text-sm text-white/70 mb-4 line-clamp-3">
+            {ticket.description}
+          </p>
+
+          {/* Footer */}
+          <div className="mt-auto flex items-end justify-between gap-3">
+            <div className="flex flex-col gap-2">
+              <span className="text-[11px] text-white/50">
                 {formatTimestamp(ticket.createdAt)}
-              </p>
+              </span>
               <ProgressBar progress={ticket.progress} />
             </div>
-            <div className="ml-auto flex items-end">
-              <StatusDisplay status={ticket.status} />
-            </div>
+            <StatusDisplay status={ticket.status} />
           </div>
         </>
       )}
