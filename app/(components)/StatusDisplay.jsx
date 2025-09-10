@@ -1,28 +1,28 @@
 import React from "react";
 
-const getColor = (status) => {
-  let color = "bg-slate-700";
+const getDotColor = (status) => {
   switch (status.toLowerCase()) {
     case "done":
-      color = "bg-green-200";
-      return color;
+      return "bg-green-500";
     case "started":
-      color = "bg-yellow-200";
-      return color;
+      return "bg-yellow-400";
     case "not started":
-      color = "bg-red-200";
-      return color;
+      return "bg-red-500";
+    default:
+      return "bg-slate-400";
   }
-  return color;
 };
 
 const StatusDisplay = ({ status }) => {
   return (
     <span
-      className={`inline-block rounded-full px-2 py-1 text-xs font-semibold text-gray-700 ${getColor(
-        status
-      )}`}
+      className="inline-flex items-center gap-2 rounded-full 
+      bg-white/5 px-3 py-1 text-xs font-medium 
+      text-white/80 ring-1 ring-white/10 backdrop-blur-sm"
     >
+      <span
+        className={`h-2.5 w-2.5 rounded-full ${getDotColor(status)}`}
+      ></span>
       {status}
     </span>
   );
