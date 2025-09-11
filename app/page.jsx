@@ -33,9 +33,11 @@ const Dashboard = () => {
   const getProj = async () => {
     setTickets((await getTickets()).tickets);
     setProjects((await getProjects()).projects);
+    setIsLoading(false);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     g();
   }, []);
 
