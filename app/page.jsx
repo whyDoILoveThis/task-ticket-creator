@@ -58,7 +58,7 @@ const Dashboard = () => {
 
       {isLoading ? (
         <SpinnyLoader />
-      ) : activeTab === "tickets" ? (projects.map((project) => {
+      ) : ( activeTab === "tickets" ? projects.map((project) => {
         const isOpen = openProjectId === project._id;
         return (
           <div
