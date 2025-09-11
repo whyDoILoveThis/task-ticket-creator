@@ -58,7 +58,7 @@ const Dashboard = () => {
 
       {isLoading ? (
         <SpinnyLoader />
-      ) : activeTab === "tickets" ? {projects?.map((project) => {
+      ) : activeTab === "tickets" ? {projects.map((project) => {
         const isOpen = openProjectId === project._id;
         return (
           <div
@@ -102,7 +102,7 @@ const Dashboard = () => {
       })}
       ) : (
         activeTab === "edit" &&
-        projects?.map((project) => (
+        projects.map((project) => (
           <div key={project._id} className="mb-6">
             <span className="flex gap-2 items-center mt-16">
               <span className="text-3xl font-extrabold mb-2">
