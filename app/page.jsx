@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [activeTab, setActiveTab] = useState("tickets"); // 🔥 track current tab
-  const [openProjectId, setOpenProjectId] = useState<string | null>(null);
+  const [openProjectId, setOpenProjectId] = useState(null);
 
   const toggleProject = (id) => {
     setOpenProjectId(openProjectId === id ? null : id); // 🔥 only one open
