@@ -68,7 +68,7 @@ const TicketForm = ({ ticket }) => {
   console.log("projects >>>>", projects);
 
   return isLoading ? (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full m-4 my-6">
       <SpinnyLoader />
     </div>
   ) : (
