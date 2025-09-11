@@ -9,7 +9,7 @@ import SpinnyLoader from "./SpinnyLoader";
 import { useRouter } from "next/navigation";
 import IconEdit from "../(icons)/IconEdit";
 
-const TicketCard = ({ ticket }) => {
+const TicketCard = ({ activeTab, ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -41,18 +41,20 @@ const TicketCard = ({ ticket }) => {
       <div className="flex items-start justify-between mb-4">
         <PriorityDisplay priority={ticket.priority} />
 
-        <div className="flex gap-4 items-center text-xl">
-          <button onClick={navigateToEditTicket} type="button">
-            <IconEdit />
-          </button>
-          <span className="flex items-center gap-2">
-            {isLoading ? <SpinnyLoader /> : <DeleteBlock id={ticket._id} />}
-          </span>
-        </div>
+        {activeTab === "edit" ? (
+          <div className="flex gap-4 items-center text-xl">
+            <button onClick={navigateToEditTicket} type="button">
+              <IconEdit />
+            </button>
+            <span className="flex items-center gap-2">
+              {isLoading ? <SpinnyLoader /> : <DeleteBlock id={ticket._id} />}
+            </span>
+          </div>
+        ) : null}
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-white tracking-tight mb-2 group-hover:text-red-400 transition-colors">
+      <h3 className="text-lg font-semibold text-white tracking-tight mb-2">
         {ticket.title}
       </h3>
 

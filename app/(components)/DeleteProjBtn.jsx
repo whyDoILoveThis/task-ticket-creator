@@ -41,9 +41,9 @@ const DeleteProjBtn = ({ projId, refetchProjects }) => {
     <div>
       <button
         onClick={handleToggleModal}
-        className="mb-4 text-xl px-3 py-1 text-red-400 hover:text-red-700 transition"
+        className="mb-4 text-xl px-3 py-1 border-2 rounded-xl bg-red-500/20 border-red-400 text-red-400 hover:text-red-700 transition"
       >
-        <IconClose />
+        DELETE
       </button>
       {isModalVisisble && !isDeleting ? (
         <CustomPopupModal

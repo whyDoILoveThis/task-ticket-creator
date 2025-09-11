@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddProjectForm = ({ refetchProjects }) => {
   const [formData, setFormData] = useState({ name: "", description: "" });
@@ -34,6 +34,12 @@ const AddProjectForm = ({ refetchProjects }) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  }, [message]);
 
   return (
     <div className="w-full flex justify-center mt-8">
@@ -79,7 +85,7 @@ const AddProjectForm = ({ refetchProjects }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="rounded-lg bg-gradient-to-r from-red-500 to-pink-500 
+          className="rounded-lg bg-gradient-to-r from-red-500 via-rose-500 to-pink-600 
                      px-4 py-2 text-white font-semibold shadow-md 
                      hover:opacity-90 transition disabled:opacity-50"
         >
