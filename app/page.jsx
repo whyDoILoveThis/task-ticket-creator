@@ -4,6 +4,7 @@ import TicketCard from "./(components)/TicketCard";
 import DeleteProjBtn from "./(components)/DeleteProjBtn";
 import { useEffect, useState } from "react";
 import { set } from "mongoose";
+import SpinnyLoader from "./(components)/SpinnyLoader";
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -50,7 +51,7 @@ const Dashboard = () => {
   return (
     <div className="p-5">
       <AddProjectForm refetchProjects={g} />
-      {projects?.map((project) => (
+      {isLoading ? <SpinnyLoader/> : projects?.map((project) => (
         <div key={project._id} className="mb-6">
           <span className="flex gap-2 items-center mt-16">
             <span className="text-3xl font-extrabold mb-2">{project.name}</span>
