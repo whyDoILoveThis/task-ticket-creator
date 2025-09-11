@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SpinnyLoader from "./SpinnyLoader";
+import IconFire from "../(icons)/IconFire";
 
 const TicketForm = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [projects, setProjects] = useState([]);
   const EDITMODE = ticket._id !== "new";
   const router = useRouter();
 
@@ -15,10 +17,29 @@ const TicketForm = ({ ticket }) => {
     priority: EDITMODE ? ticket.priority : 1,
     progress: EDITMODE ? ticket.progress : 0,
     status: EDITMODE ? ticket.status : "not started",
-    category: EDITMODE ? ticket.category : "Hardware Problem",
+    project: EDITMODE ? ticket.project?._id : "",
   };
 
   const [formData, setFormData] = useState(startingTicketData);
+
+  // 🔹 Fetch projects from API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/Projects");
+        if (!res.ok) throw new Error("❌ Failed to fetch projects");
+        const data = await res.json();
+
+        // 🔹 If your API returns { projects: [...] }
+        setProjects(Array.isArray(data) ? data : data.projects || []);
+      } catch (err) {
+        console.error(err);
+        setProjects([]); // fallback to empty array
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,10 +50,7 @@ const TicketForm = ({ ticket }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const endpoint = EDITMODE
-      ? `/api/Tickets/${ticket._id}`
-      : "/api/Tickets";
-
+    const endpoint = EDITMODE ? `/api/Tickets/${ticket._id}` : "/api/Tickets";
     const method = EDITMODE ? "PUT" : "POST";
 
     const res = await fetch(endpoint, {
@@ -46,6 +64,8 @@ const TicketForm = ({ ticket }) => {
     router.push("/");
     router.refresh();
   };
+
+  console.log("projects >>>>", projects);
 
   return isLoading ? (
     <div className="flex justify-center items-center h-full">
@@ -63,7 +83,7 @@ const TicketForm = ({ ticket }) => {
         <h3 className="text-2xl font-semibold text-white mb-2">
           {EDITMODE ? (
             <>
-              <span className="text-pink-400">Update Ticket:</span>{" "}
+              <span className="text-red-400">Update Ticket:</span>{" "}
               <span className="text-white/80">{ticket.title}</span>
             </>
           ) : (
@@ -83,7 +103,7 @@ const TicketForm = ({ ticket }) => {
               value={formData.title}
               onChange={handleChange}
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
-              focus:outline-none focus:ring-2 focus:ring-pink-500"
+              focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           </div>
 
@@ -97,23 +117,30 @@ const TicketForm = ({ ticket }) => {
               value={formData.description}
               onChange={handleChange}
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
-              focus:outline-none focus:ring-2 focus:ring-pink-500"
+              focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           </div>
 
-          {/* Category */}
+          {/* Project (Dynamic Categories) */}
           <div className="flex flex-col">
-            <label className="text-sm text-white/70 mb-1">Category</label>
+            <label className="text-sm text-white/70 mb-1">Project</label>
             <select
-              name="category"
-              value={formData.category}
+              name="project"
+              value={formData.project}
               onChange={handleChange}
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
-              focus:outline-none focus:ring-2 focus:ring-pink-500"
+              focus:outline-none focus:ring-2 focus:ring-red-400"
             >
-              <option value="Hardware Problem">💻 Hardware Problem</option>
-              <option value="Software Problem">👨‍💻 Software Problem</option>
-              <option value="Project">⛏️ Project</option>
+              <option value="">-- Select a Project --</option>
+              {projects.map((project) => (
+                <option
+                  key={project._id}
+                  value={project._id}
+                  className="bg-slate-700"
+                >
+                  📁 {project.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -124,8 +151,8 @@ const TicketForm = ({ ticket }) => {
               {[1, 2, 3, 4, 5].map((p) => (
                 <label
                   key={p}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-1 cursor-pointer
-                  ${formData.priority == p ? "bg-pink-500 text-white" : "bg-white/10 text-white/70"}
+                  className={`mb-2 text-3xl flex items-center rounded-lg cursor-pointer
+                  ${formData.priority >= p ? "text-red-400 " : "text-white/10"}
                   transition`}
                 >
                   <input
@@ -136,7 +163,7 @@ const TicketForm = ({ ticket }) => {
                     onChange={handleChange}
                     className="hidden"
                   />
-                  {p}
+                  <IconFire />
                 </label>
               ))}
             </div>
@@ -152,7 +179,7 @@ const TicketForm = ({ ticket }) => {
               max="100"
               value={formData.progress}
               onChange={handleChange}
-              className="accent-pink-500 cursor-pointer"
+              className="accent-red-400 cursor-pointer"
             />
             <span className="text-xs text-white/60 mt-1">
               {formData.progress}%
@@ -167,7 +194,7 @@ const TicketForm = ({ ticket }) => {
               value={formData.status}
               onChange={handleChange}
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
-              focus:outline-none focus:ring-2 focus:ring-pink-500"
+              focus:outline-none focus:ring-2 focus:ring-red-400"
             >
               <option value="not started">🛑 Not Started</option>
               <option value="started">🏃‍♂️ Started</option>
@@ -181,9 +208,11 @@ const TicketForm = ({ ticket }) => {
           <button
             type="submit"
             className={`px-6 py-2 rounded-xl font-semibold transition 
-            ${EDITMODE 
-              ? "bg-pink-500 hover:bg-pink-600 text-white" 
-              : "bg-green-500 hover:bg-green-600 text-white"}`}
+            ${
+              EDITMODE
+                ? "bg-red-400 hover:bg-red-500 text-white"
+                : "bg-green-500 hover:bg-green-600 text-white"
+            }`}
           >
             {EDITMODE ? "Update Ticket" : "Create Ticket"}
           </button>

@@ -1,4 +1,4 @@
-import TicketForm from "@/app/(components)/TicketForm";
+import TicketForm from "../../(components)/TicketForm";
 import React from "react";
 
 const getTicketById = async (id) => {

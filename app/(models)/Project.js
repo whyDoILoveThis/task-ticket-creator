@@ -1,6 +1,5 @@
-// models/Ticket.js
+// models/Project.js
 import mongoose, { Schema } from "mongoose";
-
 
 console.log('🔃CONNECTING TO MONGODB....');
 try {
@@ -13,20 +12,17 @@ try {
 }
 mongoose.Promise = global.Promise
 
-const ticketSchema = new Schema(
+
+const projectSchema = new Schema(
   {
-    title: String,
-    description: String,
-    priority: Number,
-    progress: Number,
-    status: String,
-    active: Boolean,
-    project: String,
+    name: { type: String, required: true },
+    description: { type: String },
+    active: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 
-const Ticket =
-  mongoose.models.Ticket || mongoose.model("Ticket", ticketSchema);
+const Project =
+  mongoose.models.Project || mongoose.model("Project", projectSchema);
 
-export default Ticket;
+export default Project;

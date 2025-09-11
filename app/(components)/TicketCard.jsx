@@ -7,6 +7,7 @@ import ProgressBar from "./ProgressBar";
 import StatusDisplay from "./StatusDisplay";
 import SpinnyLoader from "./SpinnyLoader";
 import { useRouter } from "next/navigation";
+import IconEdit from "../(icons)/IconEdit";
 
 const TicketCard = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,28 +33,26 @@ const TicketCard = ({ ticket }) => {
 
   return (
     <div
-      onClick={navigateToEditTicket}
       className="group mt-2 relative flex flex-col rounded-2xl border border-white/10 
       bg-gradient-to-br from-white/[0.05] to-white/[0.02] 
-      p-5 shadow-xl backdrop-blur-xl 
-      transition-all duration-300 hover:scale-[1.02] hover:border-white/20 
-      hover:shadow-2xl cursor-pointer"
+      p-5 shadow-xl"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <PriorityDisplay priority={ticket.priority} />
 
-        <div className="flex items-center gap-2">
-          {isLoading ? (
-            <SpinnyLoader />
-          ) : (
-            <DeleteBlock id={ticket._id} />
-          )}
+        <div className="flex gap-4 items-center text-xl">
+          <button onClick={navigateToEditTicket} type="button">
+            <IconEdit />
+          </button>
+          <span className="flex items-center gap-2">
+            {isLoading ? <SpinnyLoader /> : <DeleteBlock id={ticket._id} />}
+          </span>
         </div>
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-white tracking-tight mb-2 group-hover:text-pink-400 transition-colors">
+      <h3 className="text-lg font-semibold text-white tracking-tight mb-2 group-hover:text-red-400 transition-colors">
         {ticket.title}
       </h3>
 

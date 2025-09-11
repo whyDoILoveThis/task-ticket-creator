@@ -1,11 +1,10 @@
 "use client";
 
-import { faX } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SpinnyLoader from "./SpinnyLoader";
 import CustomPopupModal from "./CustomPopupModal";
+import IconClose from "../(icons)/IconClose";
 
 const DeleteBlock = ({ id }) => {
   const router = useRouter();
@@ -43,11 +42,13 @@ const DeleteBlock = ({ id }) => {
     <SpinnyLoader />
   ) : (
     <>
-      <FontAwesomeIcon
-        icon={faX}
+      <spam
         className="text-red-400 hover:cursor-pointer hover:text-red-200"
         onClick={showModalForConfirmation}
-      />
+      >
+        <IconClose />
+      </spam>
+
       {isModalVisisble && (
         <CustomPopupModal
           heading="❗❗Irreversible❗❗"
