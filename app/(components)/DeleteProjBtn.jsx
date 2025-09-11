@@ -1,4 +1,4 @@
-'use client";';
+"use client";
 import React from "react";
 import IconClose from "../(icons)/IconClose";
 import CustomPopupModal from "./CustomPopupModal";
@@ -15,7 +15,7 @@ const DeleteProjBtn = ({ projId }) => {
   };
   const deleteProject = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/Projects/${projId}`, {
+      const res = await fetch(`/api/Projects/${projId}`, {
         method: "DELETE",
       });
 
