@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("tickets"); // 🔥 track current tab
   const [openProjectId, setOpenProjectId] = useState<string | null>(null);
 
-  const toggleProject = (id: string) => {
+  const toggleProject = (id) => {
     setOpenProjectId(openProjectId === id ? null : id); // 🔥 only one open
   };
   
