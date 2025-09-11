@@ -1,4 +1,5 @@
 import Ticket from "../../(models)/Ticket";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -30,4 +31,25 @@ export async function GET() {
     }catch(err) {
         return NextResponse.json({ message: 'error', err }, { status: 500 });
     }
+}
+
+
+
+
+export async function DELETE(req, { params }) {
+  try {
+
+    const { id } = params;
+
+    const deletedTicket = await Ticket.findByIdAndDelete(id);
+
+    if (!deletedTicket) {
+      return NextResponse.json({ message: "❌ Ticket not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "🗑️ Ticket deleted successfully" }, { status: 200 });
+  } catch (err) {
+    console.error("DELETE error:", err);
+    return NextResponse.json({ message: "❌ Error deleting ticket", err }, { status: 500 });
+  }
 }

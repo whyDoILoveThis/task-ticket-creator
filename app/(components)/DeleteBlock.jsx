@@ -29,7 +29,7 @@ const DeleteBlock = ({ id }) => {
 
   const deleteTicket = async () => {
     setIsLoading(true);
-    const res = await fetch(`/api/Tickets/${id}`, {
+    const res = await fetch(`http://localhost:3001/api/Tickets/${id}`, {
       method: "DELETE",
     });
     if (res.ok) {
@@ -53,8 +53,8 @@ const DeleteBlock = ({ id }) => {
         <CustomPopupModal
           heading="❗❗Irreversible❗❗"
           body={modalBody()}
-          handleClose={() => handleToggleModal}
-          handleDelete={() => deleteTicket}
+          handleClose={handleToggleModal}
+          handleDelete={deleteTicket}
         />
       )}
     </>
