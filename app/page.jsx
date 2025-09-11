@@ -73,7 +73,7 @@ const Dashboard = () => {
             >
               <span className="text-2xl font-bold">{project.name}</span>
               <div className="flex items-center gap-3">
-                <DeleteProjBtn projId={project._id} refetchProjects={refetchProjects} />
+                <DeleteProjBtn projId={project._id} refetchProjects={g} />
                 <span
                   className={`transform transition-transform ${
                     isOpen ? "rotate-180" : ""
