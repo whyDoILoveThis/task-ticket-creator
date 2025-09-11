@@ -36,7 +36,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getProj();
+    g();
   }, []);
 
   useEffect(() => {
