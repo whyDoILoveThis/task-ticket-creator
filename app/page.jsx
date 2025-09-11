@@ -63,7 +63,7 @@ const Dashboard = () => {
         return (
           <div
             key={project._id}
-            className="rounded-xl bg-white/5 shadow-md border border-white/10 overflow-hidden"
+            className="rounded-xl bg-white/5 shadow-md border border-white/10 overflow-hidden mb-2"
           >
             {/* 🔽 Header / Toggle Button */}
             <button
@@ -72,8 +72,6 @@ const Dashboard = () => {
                          hover:bg-white/10 transition"
             >
               <span className="text-2xl font-bold">{project.name}</span>
-              <div className="flex items-center gap-3">
-                <DeleteProjBtn projId={project._id} refetchProjects={g} />
                 <span
                   className={`transform transition-transform ${
                     isOpen ? "rotate-180" : ""
@@ -81,11 +79,11 @@ const Dashboard = () => {
                 >
                   ▼
                 </span>
-              </div>
+              
             </button>
             {/* 🔽 Dropdown Body */}
             <div
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              className={`transition-all duration-300 ease-in-out overflow-scroll ${
                 isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
               }`}
             >
