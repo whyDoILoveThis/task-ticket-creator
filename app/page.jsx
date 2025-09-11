@@ -9,14 +9,14 @@ const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
   const [projects, setProjects] = useState([]);
   const getTickets = async () => {
-    const res = await fetch("http://localhost:3001/api/Tickets", {
+    const res = await fetch("/api/Tickets", {
       cache: "no-store",
     });
     return res.json();
   };
 
   const getProjects = async () => {
-    const res = await fetch("http://localhost:3001/api/Projects", {
+    const res = await fetch("/api/Projects", {
       cache: "no-store",
     });
     return res.json();
