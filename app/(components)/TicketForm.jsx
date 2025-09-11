@@ -68,11 +68,11 @@ const TicketForm = ({ ticket }) => {
   console.log("projects >>>>", projects);
 
   return isLoading ? (
-    <div className="flex justify-center items-center h-full m-4 my-6">
+    <div className="flex justify-center items-center h-full">
       <SpinnyLoader />
     </div>
   ) : (
-    <div className="flex justify-center mb-32">
+    <div className="flex justify-center mb-32 mt-6 mx-4">
       <form
         onSubmit={handleSubmit}
         method="post"
