@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const AddProjectForm = () => {
+const AddProjectForm = ({ refetchProjects }) => {
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -30,6 +30,7 @@ const AddProjectForm = () => {
     } catch (err) {
       setMessage(err.message || "❌ Something went wrong");
     } finally {
+      refetchProjects();
       setIsLoading(false);
     }
   };

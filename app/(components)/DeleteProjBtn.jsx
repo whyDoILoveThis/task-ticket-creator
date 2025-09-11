@@ -3,11 +3,10 @@ import React from "react";
 import IconClose from "../(icons)/IconClose";
 import CustomPopupModal from "./CustomPopupModal";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import SpinnyLoader from "./SpinnyLoader";
 
-const DeleteProjBtn = ({ projId }) => {
-  const router = useRouter();
-
+const DeleteProjBtn = ({ projId, refetchProjects }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isModalVisisble, setModalVisible] = useState(false);
 
   const handleToggleModal = () => {
@@ -15,6 +14,7 @@ const DeleteProjBtn = ({ projId }) => {
   };
   const deleteProject = async () => {
     try {
+      setIsDeleting(true);
       const res = await fetch(`/api/Projects/${projId}`, {
         method: "DELETE",
       });
@@ -24,8 +24,9 @@ const DeleteProjBtn = ({ projId }) => {
       console.error("Error deleting project:", err);
       throw err;
     } finally {
-      router.refresh();
+      refetchProjects();
       setModalVisible(false);
+      setIsDeleting(false);
     }
   };
 
@@ -44,13 +45,15 @@ const DeleteProjBtn = ({ projId }) => {
       >
         <IconClose />
       </button>
-      {isModalVisisble && (
+      {isModalVisisble && !isDeleting ? (
         <CustomPopupModal
           heading="❗❗Irreversible❗❗"
           body={modalBody()}
           handleClose={handleToggleModal}
           handleDelete={deleteProject}
         />
+      ) : (
+        isModalVisisble && isDeleting && <SpinnyLoader />
       )}
     </div>
   );
