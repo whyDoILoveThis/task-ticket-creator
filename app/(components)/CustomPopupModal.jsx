@@ -52,7 +52,7 @@ const CustomPopupModal = ({
               </button>
               <button
                 onClick={handleClose}
-                className="px-4 py-2 rounded-xl bg-gradient-to-br from-teal-400 via-emerald-500 to-green-500 hover:bg-green-600 text-white font-semibold transition"
+                className="px-4 py-2 rounded-xl bg-gradient-to-br from-teal-400 via-emerald-500 to-green-500 hover:opacity-80 text-white font-semibold transition"
               >
                 Keep
               </button>

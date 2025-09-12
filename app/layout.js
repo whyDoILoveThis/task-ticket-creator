@@ -1,5 +1,6 @@
 import Nav from './(components)/Nav'
 import './globals.css'
+import './(styles)/ItsLoaderSpinSmall.css'
 import { Inter } from 'next/font/google'
 
 import {config} from '@fortawesome/fontawesome-svg-core'

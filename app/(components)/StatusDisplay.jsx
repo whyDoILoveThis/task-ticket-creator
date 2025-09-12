@@ -16,9 +16,9 @@ const getDotColor = (status) => {
 const StatusDisplay = ({ status }) => {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full 
+      className="inline-flex text-nowrap items-center gap-2 rounded-full 
       bg-white/5 px-3 py-1 text-xs font-medium 
-      text-white/80 ring-1 ring-white/10 backdrop-blur-sm"
+      text-white/80 ring-1 ring-white/10 "
     >
       <span
         className={`h-2.5 w-2.5 rounded-full ${getDotColor(status)}`}

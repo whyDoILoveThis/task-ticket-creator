@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import SpinnyLoader from "./SpinnyLoader";
 import IconFire from "../(icons)/IconFire";
+import ItsLoaderSpinSmall from "../../app/(components)/ItsLoaderSpinSmall";
 
 const TicketForm = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(false);
   const EDITMODE = ticket._id !== "new";
   const router = useRouter();
 
@@ -24,6 +26,7 @@ const TicketForm = ({ ticket }) => {
 
   // 🔹 Fetch projects from API
   useEffect(() => {
+    setLoadingProjects(true);
     const fetchProjects = async () => {
       try {
         const res = await fetch("/api/Projects");
@@ -40,6 +43,12 @@ const TicketForm = ({ ticket }) => {
 
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    if (projects.length > 0) {
+      setLoadingProjects(false);
+    }
+  }, [projects]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -124,24 +133,28 @@ const TicketForm = ({ ticket }) => {
           {/* Project (Dynamic Categories) */}
           <div className="flex flex-col">
             <label className="text-sm text-white/70 mb-1">Project</label>
-            <select
-              name="project"
-              value={formData.project}
-              onChange={handleChange}
-              className="rounded-lg bg-white/10 px-4 py-2 text-white 
+            {loadingProjects ? (
+              <ItsLoaderSpinSmall />
+            ) : (
+              <select
+                name="project"
+                value={formData.project}
+                onChange={handleChange}
+                className="rounded-lg bg-white/10 px-4 py-2 text-white 
               focus:outline-none focus:ring-2 focus:ring-red-400"
-            >
-              <option value="">-- Select a Project --</option>
-              {projects.map((project) => (
-                <option
-                  key={project._id}
-                  value={project._id}
-                  className="bg-slate-700"
-                >
-                  📁 {project.name}
-                </option>
-              ))}
-            </select>
+              >
+                <option value="">-- Select a Project --</option>
+                {projects.map((project) => (
+                  <option
+                    key={project._id}
+                    value={project._id}
+                    className="bg-slate-700"
+                  >
+                    📁 {project.name}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           {/* Priority */}
@@ -196,9 +209,15 @@ const TicketForm = ({ ticket }) => {
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
               focus:outline-none focus:ring-2 focus:ring-red-400"
             >
-              <option value="not started">🛑 Not Started</option>
-              <option value="started">🏃‍♂️ Started</option>
-              <option value="done">🎉 Done</option>
+              <option className="bg-slate-700" value="not started">
+                🛑 Not Started
+              </option>
+              <option className="bg-slate-700" value="started">
+                🏃‍♂️ Started
+              </option>
+              <option className="bg-slate-700" value="done">
+                🎉 Done
+              </option>
             </select>
           </div>
         </div>
@@ -210,8 +229,8 @@ const TicketForm = ({ ticket }) => {
             className={`px-6 py-2 rounded-xl font-semibold transition 
             ${
               EDITMODE
-                ? "bg-red-400 hover:bg-red-500 text-white"
-                : "bg-green-500 hover:bg-green-600 text-white"
+                ? "bg-gradient-to-br from-red-400 via-red-500 to-rose-500 hover:opacity-80 text-white"
+                : "bg-gradient-to-br from-teal-400 via-emerald-500 to-green-500 hover:opacity-80 text-white"
             }`}
           >
             {EDITMODE ? "Update Ticket" : "Create Ticket"}

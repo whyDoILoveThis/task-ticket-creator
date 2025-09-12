@@ -34,20 +34,22 @@ const DeleteProjBtn = ({ projId, refetchProjects }) => {
     return (
       <div style={{ color: "#fbacac" }}>
         PLEASE MAKE ABSOLUTELY SURE YOU WANT TO PROCEED❗
+        <br />
+        This can NOT be undone. Like, ever!
       </div>
     );
   };
   return (
-    <div>
+    <>
       <button
         onClick={handleToggleModal}
-        className="mb-4 text-xl px-3 py-1 border-2 rounded-xl bg-red-500/20 border-red-400 text-red-400 hover:text-red-700 transition"
+        className="mb-4 text-sm px-3 py-0.5 border-2 rounded-xl bg-red-500/20 border-red-400 text-red-400 hover:text-red-700 transition"
       >
         DELETE
       </button>
       {isModalVisisble && !isDeleting ? (
         <CustomPopupModal
-          heading="❗❗Irreversible❗❗"
+          heading="DELETE entire project??"
           body={modalBody()}
           handleClose={handleToggleModal}
           handleDelete={deleteProject}
@@ -55,7 +57,7 @@ const DeleteProjBtn = ({ projId, refetchProjects }) => {
       ) : (
         isModalVisisble && isDeleting && <SpinnyLoader />
       )}
-    </div>
+    </>
   );
 };
 

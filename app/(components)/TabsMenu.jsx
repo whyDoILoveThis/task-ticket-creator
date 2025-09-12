@@ -15,7 +15,7 @@ const TabsMenu = ({ activeTab, onTabChange }) => {
 
   return (
     <div className=" mb-6 border-b border-white/20 pb-2">
-      <span className="max-w-[650px] flex flex-wrap gap-6">
+      <span className="flex flex-wrap justify-center gap-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -23,7 +23,7 @@ const TabsMenu = ({ activeTab, onTabChange }) => {
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all
                 ${
                   activeTab === tab.id
-                    ? "bg-red-500 text-white shadow-md"
+                    ? "bg-gradient-to-br from-red-400 via-red-500 to-rose-500 text-white shadow-md"
                     : "bg-white/10 text-white hover:bg-white/20"
                 }`}
           >
