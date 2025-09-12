@@ -5,11 +5,12 @@ import React, { useState, useEffect } from "react";
 import SpinnyLoader from "./SpinnyLoader";
 import IconFire from "../(icons)/IconFire";
 import ItsLoaderSpinSmall from "../../app/(components)/ItsLoaderSpinSmall";
+import AddProjectForm from "./AddProjectForm";
 
 const TicketForm = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [loadingProjects, setLoadingProjects] = useState(true);
   const EDITMODE = ticket._id !== "new";
   const router = useRouter();
 
@@ -76,6 +77,17 @@ const TicketForm = ({ ticket }) => {
 
   console.log("projects >>>>", projects);
 
+  if (!isLoading && !loadingProjects && projects.length <= 0) {
+    return (
+      <div>
+        <h1 className="text-center mt-8">
+          You must create atleaste one project to make a ticket
+        </h1>
+        <AddProjectForm />
+      </div>
+    );
+  }
+
   return isLoading ? (
     <div className="flex justify-center items-center h-full">
       <SpinnyLoader />
@@ -137,6 +149,7 @@ const TicketForm = ({ ticket }) => {
               <ItsLoaderSpinSmall />
             ) : (
               <select
+                required
                 name="project"
                 value={formData.project}
                 onChange={handleChange}
