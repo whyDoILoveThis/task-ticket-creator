@@ -90,13 +90,15 @@ const TicketCard = ({ activeTab, ticket }) => {
       {/* Footer */}
       {!isLoading && (
         <div className="mt-auto flex items-end justify-between gap-3">
-          <div className="flex flex-col gap-2">
+          <div className="flex mr-auto flex-col w-[50%]">
             <span className="text-[11px] text-nowrap text-white/50">
               {formatTimestamp(ticket.createdAt)}
             </span>
             <ProgressBar progress={ticket.progress} />
           </div>
-          <StatusDisplay status={ticket.status} />
+          <span className="self-end">
+            <StatusDisplay status={ticket.status} />
+          </span>
         </div>
       )}
     </motion.div>

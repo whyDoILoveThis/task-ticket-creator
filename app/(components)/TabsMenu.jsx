@@ -23,7 +23,7 @@ const TabsMenu = ({ activeTab, onTabChange }) => {
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all
                 ${
                   activeTab === tab.id
-                    ? "bg-gradient-to-br from-red-400 via-red-500 to-rose-500 text-white shadow-md"
+                    ? "cursor-default bg-gradient-to-br from-red-400 via-red-500 to-rose-500 text-white shadow-md"
                     : "bg-white/10 text-white hover:bg-white/20"
                 }`}
           >

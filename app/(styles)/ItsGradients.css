@@ -1,0 +1,7 @@
+.its-gradient-red-to-br {
+    @apply
+    bg-gradient-to-br
+    from-red-400
+    via-red-500
+    to-rose-500
+}

@@ -7,6 +7,12 @@ import IconFire from "../(icons)/IconFire";
 import ItsLoaderSpinSmall from "../../app/(components)/ItsLoaderSpinSmall";
 import AddProjectForm from "./AddProjectForm";
 
+export const RenderStatusOption = (value, text) => (
+  <option className="bg-zinc-700" value={value}>
+    {text}
+  </option>
+);
+
 const TicketForm = ({ ticket }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -51,6 +57,15 @@ const TicketForm = ({ ticket }) => {
     }
   }, [projects]);
 
+  useEffect(() => {
+    if (formData.status === "done") {
+      setFormData({ ...formData, progress: 100 });
+    } else if (formData.status === "not started") {
+      setFormData({ ...formData, progress: 0 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.status]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -89,7 +104,7 @@ const TicketForm = ({ ticket }) => {
   }
 
   return isLoading ? (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full ">
       <SpinnyLoader />
     </div>
   ) : (
@@ -149,7 +164,7 @@ const TicketForm = ({ ticket }) => {
               <ItsLoaderSpinSmall />
             ) : (
               <select
-                required
+                required={!EDITMODE}
                 name="project"
                 value={formData.project}
                 onChange={handleChange}
@@ -161,7 +176,7 @@ const TicketForm = ({ ticket }) => {
                   <option
                     key={project._id}
                     value={project._id}
-                    className="bg-slate-700"
+                    className="bg-zinc-700"
                   >
                     📁 {project.name}
                   </option>
@@ -222,15 +237,12 @@ const TicketForm = ({ ticket }) => {
               className="rounded-lg bg-white/10 px-4 py-2 text-white 
               focus:outline-none focus:ring-2 focus:ring-red-400"
             >
-              <option className="bg-slate-700" value="not started">
-                🛑 Not Started
-              </option>
-              <option className="bg-slate-700" value="started">
-                🏃‍♂️ Started
-              </option>
-              <option className="bg-slate-700" value="done">
-                🎉 Done
-              </option>
+              {RenderStatusOption("not started", "⚪Not Started")}
+              {RenderStatusOption("started", "🟡Started")}
+              {RenderStatusOption("done", "🟢Done")}
+              {RenderStatusOption("on hold", "🟠On Hold")}
+              {RenderStatusOption("idea", "🟣Idea")}
+              {RenderStatusOption("critical", "🔴Critical")}
             </select>
           </div>
         </div>
@@ -243,7 +255,7 @@ const TicketForm = ({ ticket }) => {
             ${
               EDITMODE
                 ? "bg-gradient-to-br from-red-400 via-red-500 to-rose-500 hover:opacity-80 text-white"
-                : "bg-gradient-to-br from-teal-400 via-emerald-500 to-green-500 hover:opacity-80 text-white"
+                : "bg-its-gradient-green-to-br hover:opacity-80 text-white"
             }`}
           >
             {EDITMODE ? "Update Ticket" : "Create Ticket"}

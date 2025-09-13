@@ -85,7 +85,7 @@ const AddProjectForm = ({ refetchProjects }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="rounded-lg bg-gradient-to-br from-red-400 via-red-500 to-rose-500 
+          className="rounded-lg bg-its-gradient-red-to-br 
                      px-4 py-2 text-white font-semibold shadow-md 
                      hover:opacity-90 transition disabled:opacity-50"
         >

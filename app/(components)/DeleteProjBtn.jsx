@@ -5,7 +5,7 @@ import CustomPopupModal from "./CustomPopupModal";
 import { useState } from "react";
 import SpinnyLoader from "./SpinnyLoader";
 
-const DeleteProjBtn = ({ projId, refetchProjects }) => {
+const DeleteProjBtn = ({ projId, projName, refetchProjects }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isModalVisisble, setModalVisible] = useState(false);
 
@@ -49,7 +49,7 @@ const DeleteProjBtn = ({ projId, refetchProjects }) => {
       </button>
       {isModalVisisble && !isDeleting ? (
         <CustomPopupModal
-          heading="DELETE entire project??"
+          heading={`DELETE ${projName}??`}
           body={modalBody()}
           handleClose={handleToggleModal}
           handleDelete={deleteProject}

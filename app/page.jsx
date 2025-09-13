@@ -6,6 +6,9 @@ import { useEffect, useRef, useState, useLayoutEffect, useMemo } from "react";
 import SpinnyLoader from "./(components)/SpinnyLoader";
 import TabsMenu from "./(components)/TabsMenu";
 import { motion, AnimatePresence } from "framer-motion";
+import ItsDropdown from "./(components)/ItsDropdown";
+import IconFire from "./(icons)/IconFire";
+import { RenderStatusOption } from "./(components)/TicketForm";
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -64,7 +67,7 @@ const Dashboard = () => {
     const n = Number(val);
     if (Number.isNaN(n)) return 0;
     if (n < 0) return 0;
-    if (n > 4) return 4;
+    if (n > 5) return 5;
     return Math.trunc(n); // keep integer
   };
 
@@ -132,13 +135,6 @@ const Dashboard = () => {
     setTranslates(newT);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      computeTranslates();
-    }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openProjectId]);
-
   useLayoutEffect(() => {
     computeTranslates();
     const raf = requestAnimationFrame(() => computeTranslates());
@@ -175,59 +171,98 @@ const Dashboard = () => {
 
   return (
     <div className="p-5 w-full flex flex-col justify-center items-center">
-      <div ref={containerRef} className="w-fit max-w-[1200px]">
+      <div
+        ref={containerRef}
+        className="w-fit flex flex-col items-center max-w-[1200px]"
+      >
         <TabsMenu activeTab={activeTab} onTabChange={setActiveTab} />
         {activeTab === "add" && <AddProjectForm refetchProjects={g} />}
 
-        {/* Filters controls - kept visually compact and non-invasive */}
-        <div className="w-full mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex flex-wrap gap-3 items-center">
-            <label className="text-sm text-white/70">Status</label>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
-            >
-              <option value="all">All</option>
-              <option value="done">Done</option>
-              <option value="started">Started</option>
-              <option value="not started">Not Started</option>
-            </select>
-
-            <label className="text-sm text-white/70">Min Priority</label>
-            <input
-              type="number"
-              min={0}
-              max={4}
-              step={1}
-              value={minPriority}
-              onChange={(e) => setMinPriority(clampPriority(e.target.value))}
-              className="w-20 rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
-            />
-
-            <label className="text-sm text-white/70">Search</label>
-            <input
-              type="search"
-              placeholder="title or description..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className="rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                setStatusFilter("all");
-                setMinPriority(0);
-                setSearchText("");
-              }}
-              className="px-3 py-2 rounded-lg bg-white/6 text-sm text-white"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
+        {activeTab !== "add" && (
+          <ItsDropdown
+            position="down"
+            trigger={
+              <button
+                className="flex gap-1 items-center bg-gradient-to-br from-red-400 via-red-500 to-rose-500 px-4 py-1 font-semibold rounded-xl ml-4 mb-4"
+                type="button"
+              >
+                Filter <span className="relative top-1">👇</span>{" "}
+                {statusFilter && statusFilter !== "all" && `| ${statusFilter}`}{" "}
+                {minPriority && minPriority >= 0 ? (
+                  <span className="inline-flex">
+                    {" | "}
+                    <span className="relative top-1 ml-1">
+                      {" "}
+                      <IconFire />
+                    </span>
+                    {minPriority}
+                  </span>
+                ) : null}{" "}
+                {searchText && searchText !== "" && `| ${searchText}`}
+              </button>
+            }
+          >
+            {/* Filters controls - kept visually compact and non-invasive */}
+            <div className="w-full mb-10 flex flex-col gap-3">
+              <span className="flex gap-1">
+                <label className="text-sm text-white/70">Status</label>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
+                >
+                  <option className="bg-zinc-700" value="all">
+                    All
+                  </option>
+                  {RenderStatusOption("not started", "⚪Not Started")}
+                  {RenderStatusOption("started", "🟡Started")}
+                  {RenderStatusOption("done", "🟢Done")}
+                  {RenderStatusOption("on hold", "🟠On Hold")}
+                  {RenderStatusOption("idea", "🟣Idea")}
+                  {RenderStatusOption("critical", "🔴Critical")}
+                </select>
+              </span>
+              <span className="flex gap-1">
+                <label className="text-sm text-white/70">Min Priority</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={5}
+                  step={1}
+                  value={minPriority}
+                  onChange={(e) =>
+                    setMinPriority(clampPriority(e.target.value))
+                  }
+                  className="w-20 rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
+                />
+              </span>
+              <span className="flex flex-col gap-1">
+                <label className="text-sm text-white/70 ml-2 leading-none">
+                  Search
+                </label>
+                <input
+                  type="search"
+                  placeholder="title or description..."
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  className="rounded-lg bg-white/5 px-3 py-2 text-sm text-white focus:outline-none"
+                />
+              </span>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setStatusFilter("all");
+                    setMinPriority(0);
+                    setSearchText("");
+                  }}
+                  className="px-3 py-2 hover:opacity-90 rounded-lg bg-its-gradient-green-to-br text-sm font-bold absolute right-2 text-white"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </ItsDropdown>
+        )}
 
         {isLoading ? (
           <SpinnyLoader />
@@ -250,7 +285,9 @@ const Dashboard = () => {
                     <motion.button
                       ref={(el) => (buttonRefs.current[project._id] = el)}
                       initial={false}
-                      onClick={() => toggleProject(project._id)}
+                      onClick={() => {
+                        toggleProject(project._id);
+                      }}
                       className="w-fit mb-3 flex gap-2 items-center overflow-hidden hover:!bg-white/10 border border-white/10 shadow-lg px-4 py-3 text-left rounded-2xl transition-colors duration-200"
                       animate={{
                         x: isOpen ? tx : 0,
@@ -260,8 +297,8 @@ const Dashboard = () => {
                       }}
                       transition={{
                         type: "tween",
-                        duration: 0.28,
-                        ease: "easeInOut",
+                        duration: 0.18,
+                        ease: "easeOut",
                       }}
                       style={{ willChange: "transform, background-color" }}
                     >
@@ -312,6 +349,7 @@ const Dashboard = () => {
                             {activeTab === "edit" && (
                               <DeleteProjBtn
                                 projId={project._id}
+                                projName={project.name}
                                 refetchProjects={g}
                               />
                             )}
